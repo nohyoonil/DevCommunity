@@ -16,7 +16,7 @@ public abstract class JWTUtils {
     private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
     private static final Algorithm ALGORITHM = Algorithm.HMAC512(KEY.getBytes(StandardCharsets.UTF_8));
 
-    public static String createToken(Long id, String email, String nickname) {
+    public static String createToken(Long id, String email) {
 
         final Date now = new Date();
 
@@ -24,11 +24,10 @@ public abstract class JWTUtils {
                 .withExpiresAt(new Date(now.getTime() + TOKEN_EXPIRE_TIME))
                 .withClaim("id", id)
                 .withSubject(email)
-                .withIssuer(nickname)
                 .sign(ALGORITHM);
     }
 
-    public static TokenInfo getTokenInfo(String token, String KEY) {
+    public static TokenInfo getTokenInfo(String token) {
         DecodedJWT jwt;
 
         try {
@@ -39,8 +38,7 @@ public abstract class JWTUtils {
 
         Long id = jwt.getClaim("id").asLong();
         String email = jwt.getSubject();
-        String nickname = jwt.getIssuer();
 
-        return new TokenInfo(id, email, nickname);
+        return new TokenInfo(id, email);
     }
 }

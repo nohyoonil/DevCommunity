@@ -13,6 +13,7 @@ public enum ErrorCode {
     USER_NOT_EXISTS(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다."),
     REQUIRED_LOGIN_AGAIN(HttpStatus.BAD_REQUEST, "재 로그인 후 이용해주세요."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "잠시 후 다시 이용해주세요."),
+    UNABLE_TO_UPDATE(HttpStatus.BAD_REQUEST, "수정 가능한 정보를 입력해주세요."),
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "옳바른 비밀번호를 입력해주세요.");
 
     private final HttpStatus status;
