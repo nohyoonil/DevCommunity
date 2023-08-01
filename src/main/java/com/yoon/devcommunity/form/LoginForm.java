@@ -10,16 +10,14 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 @NoArgsConstructor
-public class SignUpForm {
-
-    @Email @NotBlank
-    private String email;
+public class LoginForm {
 
     @NotBlank
-    @Size(min = 2, max = 10)
-    private String nickname;
+    @Email
+    private String email;
 
     @NotBlank
     @Size(min = 8, max = 20)
     private String password;
+
 }
