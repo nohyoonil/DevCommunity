@@ -5,10 +5,12 @@ import com.yoon.devcommunity.exception.CustomException;
 import com.yoon.devcommunity.exception.ErrorCode;
 import com.yoon.devcommunity.form.PostCreateForm;
 import com.yoon.devcommunity.form.PostUpdateForm;
+import com.yoon.devcommunity.model.PostSortType;
 import com.yoon.devcommunity.model.TokenInfo;
 import com.yoon.devcommunity.service.PostService;
 import com.yoon.devcommunity.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -62,5 +64,13 @@ public class PostController {
     public ResponseEntity<?> getPost(@PathVariable long postId) {
 
         return ResponseEntity.ok(postService.getPost(postId));
+    }
+
+    //게시글 목록 조회(10개씩) - 작성일(default), 좋아요 수, 조회수로 조회 가능
+    @GetMapping
+    public ResponseEntity<?> getPostList(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "LATEST") PostSortType sortType) {
+
+        return ResponseEntity.ok(postService.getPostList(page, sortType));
     }
 }

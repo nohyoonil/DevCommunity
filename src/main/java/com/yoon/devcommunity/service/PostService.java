@@ -7,9 +7,13 @@ import com.yoon.devcommunity.exception.CustomException;
 import com.yoon.devcommunity.exception.ErrorCode;
 import com.yoon.devcommunity.form.PostCreateForm;
 import com.yoon.devcommunity.form.PostUpdateForm;
+import com.yoon.devcommunity.model.PostSortType;
 import com.yoon.devcommunity.repository.PostRepository;
 import com.yoon.devcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final int SIZE = 10;
 
     //게시글 작성
     public void createPost(long userId, PostCreateForm postForm) {
@@ -67,5 +72,12 @@ public class PostService {
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_EXISTS));
 
         return PostDto.of(post);
+    }
+
+    //게시글들 조회 - page 기준 10건씩 조회 (최신순, 좋아요 수, 조회수)
+    public Page<PostDto> getPostList(int page, PostSortType sortType) {
+        PageRequest pageRequest = PageRequest.of(page, SIZE, Sort.by(sortType.getValue()).descending());
+
+        return postRepository.findAll(pageRequest).map(PostDto::of);
     }
 }
