@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 @NoArgsConstructor
-public class CreatePostForm {
+public class PostCreateForm {
 
     @NotBlank
     @Size(min = 6)
