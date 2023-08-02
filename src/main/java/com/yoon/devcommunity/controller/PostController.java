@@ -37,8 +37,7 @@ public class PostController {
 
     //게시글 내용 수정
     @PutMapping("/{postId}")
-    public ResponseEntity<?> updatePost(@RequestHeader("JWT-TOKEN") String token,
-                                        @PathVariable long postId,
+    public ResponseEntity<?> updatePost(@RequestHeader("JWT-TOKEN") String token, @PathVariable long postId,
                                         @Valid @RequestBody PostUpdateForm updateForm, Errors errors) {
         if (errors.hasErrors()) throw new CustomException(ErrorCode.INVALID_DATA_INPUT);
 
@@ -47,4 +46,14 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    //게시글 삭제
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> deletePost(@RequestHeader("JWT-TOKEN") String token, @PathVariable long postId) {
+        TokenInfo tokenInfo = JWTUtils.getTokenInfo(token);
+        postService.deletePost(tokenInfo.getId(), postId);
+
+        return ResponseEntity.ok().build();
+    }
+
 }

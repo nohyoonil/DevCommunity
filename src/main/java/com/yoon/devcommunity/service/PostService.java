@@ -36,7 +36,7 @@ public class PostService {
         postRepository.save(post);
     }
 
-    //게시글 수정
+    //게시글 수정 - content 수정 가능
     public void updatePost(long userId, long postId, PostUpdateForm updateForm) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_EXISTS));
@@ -48,5 +48,15 @@ public class PostService {
         post.setModifiedDate(LocalDateTime.now());
 
         postRepository.save(post);
+    }
+
+    //게시글 삭제
+    public void deletePost(long userId, long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_EXISTS));
+
+        if (post.getUser().getId() != userId) throw new CustomException(ErrorCode.HAS_NO_AUTHORIZATION);
+
+        postRepository.delete(post);
     }
 }
