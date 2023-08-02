@@ -1,5 +1,6 @@
 package com.yoon.devcommunity.service;
 
+import com.yoon.devcommunity.dto.PostDto;
 import com.yoon.devcommunity.entity.Post;
 import com.yoon.devcommunity.entity.User;
 import com.yoon.devcommunity.exception.CustomException;
@@ -58,5 +59,13 @@ public class PostService {
         if (post.getUser().getId() != userId) throw new CustomException(ErrorCode.HAS_NO_AUTHORIZATION);
 
         postRepository.delete(post);
+    }
+
+    //게시글 단건 조회
+    public PostDto getPost(long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_EXISTS));
+
+        return PostDto.of(post);
     }
 }

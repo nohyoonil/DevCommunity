@@ -1,5 +1,6 @@
 package com.yoon.devcommunity.controller;
 
+import com.yoon.devcommunity.dto.PostDto;
 import com.yoon.devcommunity.exception.CustomException;
 import com.yoon.devcommunity.exception.ErrorCode;
 import com.yoon.devcommunity.form.PostCreateForm;
@@ -56,4 +57,10 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    //게시글 단건 조회
+    @GetMapping("/{postId}")
+    public ResponseEntity<?> getPost(@PathVariable long postId) {
+
+        return ResponseEntity.ok(postService.getPost(postId));
+    }
 }
