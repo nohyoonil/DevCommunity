@@ -1,7 +1,5 @@
 package com.yoon.devcommunity.controller;
 
-import com.yoon.devcommunity.exception.CustomException;
-import com.yoon.devcommunity.exception.ErrorCode;
 import com.yoon.devcommunity.form.LoginForm;
 import com.yoon.devcommunity.form.SignUpForm;
 import com.yoon.devcommunity.form.UserUpdateForm;
@@ -13,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,8 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpForm signUpForm, Errors errors) {
-        if (errors.hasErrors()) throw new CustomException(ErrorCode.INVALID_DATA_INPUT);
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpForm signUpForm) {
 
         userService.signUp(signUpForm);
 
@@ -35,18 +31,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginForm loginForm, Errors errors) {
-        if (errors.hasErrors()) throw new CustomException(ErrorCode.INVALID_DATA_INPUT);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginForm loginForm) {
 
-        String token = userService.login(loginForm);
-
-        return ResponseEntity.ok(new LoginToken(token));
+        return ResponseEntity.ok(new LoginToken(userService.login(loginForm)));
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestHeader("JWT-TOKEN") String token,
-                                    @Valid @RequestBody UserUpdateForm updateForm, Errors errors) {
-        if (errors.hasErrors()) throw new CustomException(ErrorCode.INVALID_DATA_INPUT);
+                                    @Valid @RequestBody UserUpdateForm updateForm) {
 
         TokenInfo tokenInfo = JWTUtils.getTokenInfo(token);
         userService.update(tokenInfo, updateForm);
