@@ -5,12 +5,11 @@ import com.yoon.devcommunity.service.HeartService;
 import com.yoon.devcommunity.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/heart")
-@Controller
+@RestController
 public class HeartController {
 
     private final HeartService heartService;
