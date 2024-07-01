@@ -1,5 +1,6 @@
 package com.yoon.devcommunity.controller;
 
+import com.yoon.devcommunity.dto.PostDto;
 import com.yoon.devcommunity.form.PostCreateForm;
 import com.yoon.devcommunity.form.PostUpdateForm;
 import com.yoon.devcommunity.model.PostSortType;
@@ -7,16 +8,16 @@ import com.yoon.devcommunity.model.TokenInfo;
 import com.yoon.devcommunity.service.PostService;
 import com.yoon.devcommunity.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/post")
-@Controller
+@RestController
 public class PostController {
 
     private final PostService postService;
@@ -54,15 +55,15 @@ public class PostController {
 
     //게시글 단건 조회
     @GetMapping("/{postId}")
-    public ResponseEntity<?> getPost(@PathVariable long postId) {
+    public ResponseEntity<PostDto> getPost(@PathVariable long postId) {
 
         return ResponseEntity.ok(postService.getPost(postId));
     }
 
     //게시글 목록 조회(10개씩) - 작성일(default), 좋아요 수, 조회수로 조회 가능
     @GetMapping
-    public ResponseEntity<?> getPostList(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "LATEST") PostSortType sortType) {
+    public ResponseEntity<Page<PostDto>> getPostList(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "LATEST") PostSortType sortType) {
 
         return ResponseEntity.ok(postService.getPostList(page, sortType));
     }

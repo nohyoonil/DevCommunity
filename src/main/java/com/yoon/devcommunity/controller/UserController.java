@@ -10,14 +10,13 @@ import com.yoon.devcommunity.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -31,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginForm loginForm) {
+    public ResponseEntity<LoginToken> login(@Valid @RequestBody LoginForm loginForm) {
 
         return ResponseEntity.ok(new LoginToken(userService.login(loginForm)));
     }
